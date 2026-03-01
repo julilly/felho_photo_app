@@ -28,6 +28,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = [ "photo-app-felho-labor-987667231001.europe-west1.run.app"]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://photo-app-felho-labor-987667231001.europe-west1.run.app"
+]
+
 
 # Application definition
 
