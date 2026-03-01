@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-d!bb(6cp_^!zh&$nx##0ix)a7y0dp(pjrozg$7uecv8ce-$#6p
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [ "photo-app-felho-labor-987667231001.europe-west1.run.app"]
 
 
 # Application definition
