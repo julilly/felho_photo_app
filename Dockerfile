@@ -16,7 +16,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY ./photo_app/ /app/
 
 # Expose the port Django runs on
-EXPOSE 8000
+EXPOSE 8080
 
 # Command to run Django application
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "photos.wsgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "photo_app.wsgi:application"]
