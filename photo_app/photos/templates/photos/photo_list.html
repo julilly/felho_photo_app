@@ -1,0 +1,27 @@
+{% extends 'photos/base.html' %}
+
+{% block content %}
+<h2>All Photos</h2>
+
+<p>
+    Order by:
+    <a href="{% url 'order_by_name' %}">Name</a> |
+    <a href="{% url 'order_by_date' %}">Date</a>
+</p>
+
+{% for photo in photos %}
+    <p>
+        <a href="{% url 'photo_detail' photo.pk %}">
+            {{ photo.name }}
+        </a>
+        ({{ photo.upload_date }})
+        
+        {% if user.is_authenticated and photo.user == user %}
+            <a href="{% url 'delete_photo' photo.pk %}">Delete</a>
+        {% endif %}
+    </p>
+{% empty %}
+    <p>No photos yet.</p>
+{% endfor %}
+
+{% endblock %}

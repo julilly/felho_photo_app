@@ -1,0 +1,13 @@
+{% extends 'photos/base.html' %}
+
+{% block content %}
+<p>
+    <a href="{% url 'photo_list' %}">Back</a>
+</p>
+
+<h2>{{ photo.name }}</h2>
+<p>Uploaded: {{ photo.upload_date }}</p>
+
+<img src="{{ photo.image.url }}" width="400">
+
+{% endblock %}

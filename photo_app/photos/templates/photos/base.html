@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Photos App</title>
+</head>
+<body>
+
+{% if user.is_authenticated %}
+    Hello {{ user.username }} |
+    <a href="{% url 'logout' %}">Logout</a> |
+    <a href="{% url 'upload_photo' %}">Upload</a>
+{% else %}
+    <a href="{% url 'login' %}">Login</a> |
+    <a href="{% url 'register' %}">Register</a>
+{% endif %}
+
+<hr>
+
+{% block content %}{% endblock %}
+
+</body>
+</html>
