@@ -1,18 +1,17 @@
 from django.shortcuts import render
-
-# Create your views here.
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Photo
 from .forms import PhotoForm, RegisterForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from django.db.models.functions import Lower
 
 def photo_list(request):
     photos = Photo.objects.all()
     return render(request, 'photos/photo_list.html', {'photos': photos})
 
 def order_photos_by_name(request):
-    photos = Photo.objects.all().order_by('name')
+    photos = Photo.objects.all().order_by(Lower('name'))
     return render(request, 'photos/photo_list.html', {'photos': photos})
 
 def order_photos_by_date(request):
