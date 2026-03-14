@@ -151,7 +151,7 @@ LOGIN_REDIRECT_URL = '/'
 
 # Cloud Storage
 GS_BUCKET_NAME = 'photos-app-image-bucket'
-GS_DEFAULT_ACL = 'publicRead'
+GS_DEFAULT_ACL = None
 
 STORAGES = {
     "default": {
