@@ -19,4 +19,5 @@ COPY ./photo_app/ /app/
 EXPOSE 8080
 
 # Command to run Django application
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "photo_app.wsgi:application"]
+#CMD ["gunicorn", "--bind", "0.0.0.0:8080", "photo_app.wsgi:application"]
+CMD ["sh", "-c", "python manage.py migrate --noinput && gunicorn --bind 0.0.0.0:8080 photo_app.wsgi:application"]

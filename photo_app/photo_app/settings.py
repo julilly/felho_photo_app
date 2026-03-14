@@ -78,12 +78,28 @@ WSGI_APPLICATION = "photo_app.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'photos_app_db',
+        'USER': 'db_user',
+        'PASSWORD': 'db_user_password', 
     }
 }
+
+if os.getenv('CLOUD_RUN_SERVICE_ACCOUNT'):
+    db_conn_name = os.getenv('INSTANCE_CONNECTION_NAME') 
+    DATABASES['default']['HOST'] = f'/cloudsql/{db_conn_name}'
+else:
+    DATABASES['default']['HOST'] = '127.0.0.1'
+    DATABASES['default']['PORT'] = '5432'
 
 
 # Password validation
