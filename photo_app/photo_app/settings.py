@@ -94,7 +94,7 @@ DATABASES = {
     }
 }
 
-if os.getenv('CLOUD_RUN_SERVICE_ACCOUNT'):
+if os.getenv('INSTANCE_CONNECTION_NAME'):
     db_conn_name = os.getenv('INSTANCE_CONNECTION_NAME') 
     DATABASES['default']['HOST'] = f'/cloudsql/{db_conn_name}'
 else:
