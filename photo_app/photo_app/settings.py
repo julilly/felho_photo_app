@@ -90,7 +90,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'photos_app_db',
         'USER': 'db_user',
-        'PASSWORD': 'db_user_password', 
+        'PASSWORD': os.getenv('DB_PASSWORD'), 
     }
 }
 
