@@ -83,3 +83,4 @@ docker run photo_app
 - For deployment and docker file: https://www.youtube.com/watch?v=Rp5vd34d-z4&t=1s
 - Multiple pages from Django documentation: https://docs.djangoproject.com/en/6.0/
 - Tutorial for registration and authentication: https://www.pythontutorial.net/django-tutorial/django-registration/
+- For Google Cloud SQL and Google Cloud Storage configurations: https://docs.cloud.google.com/python/django/run

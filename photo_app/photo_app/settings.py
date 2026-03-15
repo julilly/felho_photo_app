@@ -95,12 +95,10 @@ DATABASES = {
     }
 }
 
-if os.getenv('INSTANCE_CONNECTION_NAME'):
-    db_conn_name = os.getenv('INSTANCE_CONNECTION_NAME') 
-    DATABASES['default']['HOST'] = f'/cloudsql/{db_conn_name}'
-else:
-    DATABASES['default']['HOST'] = '127.0.0.1'
-    DATABASES['default']['PORT'] = '5432'
+
+db_conn_name = os.getenv('INSTANCE_CONNECTION_NAME') 
+DATABASES['default']['HOST'] = f'/cloudsql/{db_conn_name}'
+
 
 
 # Password validation
