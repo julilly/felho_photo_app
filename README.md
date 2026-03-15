@@ -39,6 +39,18 @@ The template files:
 - `upload_photo.html`: for uploading photos
 
 ---
+## Database
+- The project uses Google Cloud's PostgreSQL instance. This ensures that even if multiple container instances are running, data persists safely.
+- The Cloud Run service connects to the database using Unix sockets.
+- INSTANCE_CONNECTION_NAME and DB_PASSWORD are injected at runtime. Their value is configured at Cloud Run's Environment Variables (Secret Manager).
+- Database migrations are automated with the help of the Dockerfile. Migrations are executed before the Gunicorn web server starts.
+
+## Storage
+Since Google Cloud Run containers are stateless, the uploaded photos were destroyed when the server restarted. To ensure that the photos are saved permanently, I used Google Cloud Storage.
+- Uploaded photos are saved to the Google Cloud Storage bucket.
+- Uniform bucket level access is used meaning that public read access in managed at bucket level.
+
+---
 
 ## Authentication
 
