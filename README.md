@@ -39,18 +39,6 @@ The template files:
 - `upload_photo.html`: for uploading photos
 
 ---
-## Database
-- The project uses Google Cloud's PostgreSQL instance. This ensures that even if multiple container instances are running, data persists safely.
-- The Cloud Run service connects to the database using Unix sockets.
-- INSTANCE_CONNECTION_NAME and DB_PASSWORD are injected at runtime. Their value is configured at Cloud Run's Environment Variables (Secret Manager).
-- Database migrations are automated with the help of the Dockerfile. Migrations are executed before the Gunicorn web server starts.
-
-## Storage
-Since Google Cloud Run containers are stateless, the uploaded photos were destroyed when the server restarted. To ensure that the photos are saved permanently, I used Google Cloud Storage.
-- Uploaded photos are saved to the Google Cloud Storage bucket.
-- Uniform bucket level access is used meaning that public read access in managed at bucket level.
-
----
 
 ## Authentication
 
@@ -66,6 +54,31 @@ Authorization rules:
 - Only authenticated users can upload photos.
 - Only the owner of a photo can delete it.
 
+---
+
+## Database
+- The project uses Google Cloud's PostgreSQL instance. This ensures that even if multiple container instances are running, data persists safely.
+- The Cloud Run service connects to the database using Unix sockets. This is set in the settings.py file:
+`DATABASES['default']['HOST'] = f'/cloudsql/{db_conn_name}'`
+Here, variable `db_conn_name` is the instance connection name which is injected at runtime through the `INSTANCE_CONNECTION_NAME` environment variable.
+- Database migrations are automated with the help of the Dockerfile. Migrations are executed before the Gunicorn web server starts:
+`CMD ["sh", "-c", "python manage.py migrate --noinput && gunicorn --bind 0.0.0.0:8080 photo_app.wsgi:application"]`
+- INSTANCE_CONNECTION_NAME and DB_PASSWORD are injected at runtime. Their value is configured at Cloud Run's Environment Variables (Secret Manager).
+
+
+## Storage
+Since Google Cloud Run containers are stateless, the uploaded photos were destroyed when the server restarted. To ensure that the photos are saved permanently, I used Google Cloud Storage.
+- Uploaded photos are saved to the Google Cloud Storage bucket.
+- Uniform bucket level access is used meaning that public read access in managed at bucket level. Instead of per-object control lists, ACLs (which is set by `GS_DEFAULT_ACL = None`), public read access is configured in Google Cloud Storage: for allUsers the `Storage Object Viewer` role is granted.
+- Temporary, self-destructing signed URLs are disabled in the settings.py file: `GS_QUERYSTRING_AUTH = False`. Thus we get permanent URLs for images.
+
+## Identity and Access Management (IAM)
+The project also relies on  Google Cloud IAM to manage permissions between the application, the database and the storage.
+- `Cloud SQL Client`: This is necessary for the application to estabish a connection with the database.
+- `Storage Object Admin`: This is necessary for the application to upload and delete files from the Google Cloud Storage bucket.
+- `Storage Object Viewer`: This is granted for allUsers to allow anyone to view the uploaded photos without temporary signed URLs.
+
+---
 ## Request Flow
 When a user clicks a link on the page (or opens the page), the URL dispatcher (in the urls.py file) pas the request to a view. The view can interact with the database and it passes data to the template. The template renders the HTML and thus the page is dispalyed in the browser.
 
